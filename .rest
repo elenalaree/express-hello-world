@@ -1,6 +1,13 @@
 GET http://localhost:3001/contacts HTTP/1.1
 
+### PUT ROUTE
+PUT http://localhost:3001/contact/65a0a0dc177dec9e5c9f03fc HTTP/1.1
+content-type: application/application/json
 
-# contacts
-
-GET http://localhost:3001/contacts/ HTTP/1.1
+{
+	"firstName":"Heidi",
+	"lastName":"Rogers",
+	"email":"heidi@superfake.com",
+	"favoriteColor":"yellow",
+	"birthday":"July 18, 1975"
+}
