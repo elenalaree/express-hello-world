@@ -3,39 +3,40 @@ const app = express();
 const port = process.env.PORT || 3001;
 const dotenv = require('dotenv');
 dotenv.config();
-const {MongoClient} = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
+const { connect } = require("./routes");
 
+const mongoConnect = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@schoolcluster.6srws6e.mongodb.net/ `
 
-async function main(){
-    const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@schoolcluster.6srws6e.mongodb.net/ `
-    const client = new MongoClient(uri);
+MongoClient.connect(mongoConnect, { useUnifiedTopology: true }).then(
+    client => {
+        console.log('Connected to Database')
+        const db = client.db('school-Database');
+        app.get('/', (req, res, next) => { res.json('Elena Rogers'); });
+        app.get("/contacts", (req, res) => {
+            db.collection('Contacts').find().toArray().then(results => {
+                res.json(results)
+            }).catch(error => console.error(error));
 
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
- 
-        // Make the appropriate DB calls
-        await  listDatabases(client);
- 
-    } catch (e) {
-        console.error(e);
-    } finally {
-        await client.close();
-    }
-}
-
-main().catch(console.error);
-
-async function listDatabases(client){
-    const databasesList = await client.db().admin().listDatabases();
-
-    console.log("databases:");
-    databasesList.databases.forEach(db => {
-        console.log(`- ${db.name}`)
+        })
+        app.get("/contact/:id", (req, res) => {
+            const contactId = req.params.id; // Get the ID from the URL parameter
+            db.collection('Contacts').findOne({ _id: new ObjectId(contactId) })
+                .then(contact => {
+                    if (!contact) {
+                        // If no contact with the specified ID is found, return a 404 response
+                        return res.status(404).json({ message: 'Contact not found' });
+                    }
+                    res.json(contact);
+                })
+                .catch(error => {
+                    console.error(error);
+                    res.status(500).json({ error: 'Internal server error' });
+                });
+        });
     })
-}
 // 
-app.use('/', require('./routes'));
+
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
 
