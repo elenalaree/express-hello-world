@@ -6,7 +6,7 @@ dotenv.config();
 const { MongoClient, ObjectId } = require('mongodb');
 const { connect } = require("./routes");
 
-const mongoConnect = `${process.env.MONGODB_URI}`
+const mongoConnect = process.env.MONGODB_URI
 
 MongoClient.connect(mongoConnect, { useUnifiedTopology: true }).then(
     client => {
