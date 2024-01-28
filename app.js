@@ -6,7 +6,7 @@ dotenv.config();
 const { MongoClient, ObjectId } = require('mongodb');
 const { connect } = require("./routes");
 
-const mongoConnect = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@schoolcluster.6srws6e.mongodb.net/ `
+const mongoConnect = `${process.env.MONGODB_URI}`
 
 MongoClient.connect(mongoConnect, { useUnifiedTopology: true }).then(
     client => {
