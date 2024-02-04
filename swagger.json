@@ -5,7 +5,7 @@
     "description": "Contacts API: BYI Idaho",
     "version": "1.0.0"
   },
-  "host": "https://practice-7kdp.onrender.com",
+  "host": "practice-7kdp.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
