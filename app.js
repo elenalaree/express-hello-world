@@ -11,6 +11,7 @@ app
     .use(bodyParser.json())
     .use((req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, DELETE')
         next();
     })
     .use('/', require('./routes'));
