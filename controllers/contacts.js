@@ -73,32 +73,18 @@ const updateContact = async (req, res) => {
     }
 }
 
-const deleteContact =  async (req, res) => {
-    const contactId = req.params.id; // Get the ID from the URL parameter
-
-    try {
-        // Check if the contact exists in the database
-        const existingContact = await mongodb.collection('Contacts').findOne({ _id: new ObjectId(contactId) });
-
-        if (!existingContact) {
-            // If no contact with the specified ID is found, return a 404 response
-            return res.status(404).json({ message: 'Contact not found' });
-        }
-
-        // Delete the contact from the database
-        const result = await mongodb.collection('Contacts').deleteOne({ _id: new ObjectId(contactId) });
-
-        if (result.deletedCount === 1) {
-            console.log("Contact deleted successfully");
-            res.status(200).json({ message: 'Contact deleted successfully' });
-        } else {
-            console.error('Error deleting contact');
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    } catch (error) {
-        console.error('Error deleting contact:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+const deleteContact = async (req, res) => {
+    const userId = new ObjectId(req.params.id);
+    const response = await mongodb.getDb().db().collection('Contacts').deleteOne({ _id: userId }, true);
+    console.log(response);
+    if (response.deletedCount > 0) {
+      res.status(200).json({
+        response: response,
+        message: "Deleted contact successfully.",
+      });
+    } else {
+      res.status(500).json(response.error || 'Some error occurred when deleting the contact.');
     }
-};
+  };
 
 module.exports = { getAll, getContact, createContact, updateContact, deleteContact };
