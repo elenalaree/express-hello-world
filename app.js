@@ -7,11 +7,14 @@ const mongodb = require("./database/contactsDB")
 
 
 const app = express();
-app.use(bodyParser.json()).use('/', require('./routes'));
+app
+    .use(bodyParser.json())
+    .use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        next();
+    })
+    .use('/', require('./routes'));
 
-
-
-// 
 
 mongodb.initDb((err) => {
     if (err) {
