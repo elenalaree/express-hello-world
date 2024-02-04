@@ -5,7 +5,8 @@ const doc = {
         title: 'Contacts',
         description: 'Contacts API: BYI Idaho'
     },
-    host: 'localhost:3001'
+    host: 'https://practice-7kdp.onrender.com',
+    schemes: ['https']
 };
 
 const outputFile = './swagger.json';
