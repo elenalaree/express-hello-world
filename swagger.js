@@ -5,7 +5,7 @@ const doc = {
         title: 'Contacts',
         description: 'Contacts API: BYI Idaho'
     },
-    host: 'https://practice-7kdp.onrender.com',
+    host: 'practice-7kdp.onrender.com',
     schemes: ['https']
 };
 
